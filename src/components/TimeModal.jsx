@@ -26,15 +26,6 @@ import {
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 
 const quickRanges = [
-    // "Last 5 minutes",
-    // "Last 15 minutes",
-    // "Last 30 minutes",
-    // "Last 1 hour",
-    // "Last 3 hour",
-    // "Last 6 hour",
-    // "Last 12 hour",
-    // "Last 24 hour",
-    // "Last 2 days",
   "Last 5 minutes",
   "Last 15 minutes",
   "Last 30 minutes",
@@ -162,15 +153,6 @@ const recentTasks = [
 
 
 const DURATION = [
-    // 5 * 60 * 1000,
-    // 15 * 60 * 1000,
-    // 30 * 60 * 1000,
-    // 60 * 60 * 1000,
-    // 3 * 60 * 60 * 1000,
-    // 6 * 60 * 60 * 1000,
-    // 12 * 60 * 60 * 1000,
-    // 24 * 60 * 60 * 1000,
-    // 2 * 24 * 60 * 60 * 1000,
   5 * 60 * 1000,                
   15 * 60 * 1000,                
   30 * 60 * 1000,                
@@ -255,7 +237,7 @@ const TimeModal = () => {
     }
 
     const pastNow = async () => {
-        if (copiedDate) {
+        if (copiedDate.from != "" && copiedDate.to != "") {
             setStartDate(copiedDate.from);
             setEndDate(copiedDate.to);
             console.log("the copy data is here ", copiedDate)
@@ -275,19 +257,6 @@ const TimeModal = () => {
 
         console.log("Filtered recent tasks:", fil);
     };
-    const [focusedInput, setFocusedInput] = useState(null); // 'start' or 'end'
-
-    const handleDateChange = (item) => {
-        const newRange = { ...state[0] };
-
-        if (focusedInput === 'start') {
-            newRange.startDate = item.selection.startDate;
-        } else if (focusedInput === 'end') {
-            newRange.endDate = item.selection.endDate;
-        }
-
-        setState([newRange]);
-    };
 
     const [state, setState] = useState([
         {
@@ -300,23 +269,17 @@ const TimeModal = () => {
     useEffect(() => {
         const result = quickRanges.filter((key) => key.toLowerCase().includes(searchKey.toLowerCase()))
         setquickRangesData(result)
-        // setStartDate(state[0].startDate.toISOString().split('.')[0])
-        // setEndDate(state[0].endDate.toISOString().split('.')[0] || state[0].startDate.toISOString().split('.')[0])
-        // setStartDate(startDate ? startDate.format('YYYY-MM-DDTHH:mm:ss') : '' )
-        // setTimeout(() => {
-        //      setCalenderOpen(false)
-        // }, 2000);
+
+        setTimeout(() => {
+            setIsMouseHover(false);
+        }, 2000);
     }, [state, searchKey])
-    console.log("the start date is ", startDate);
-    console.log("the end date is  ", endDate);
-    console.log("the calender modal ", state)
 
     return (
         <div className='p-4 bg-black w-[100%] h-[100vh]' >
             <div className="wrapper float-right">
                 <h1 onMouseEnter={() => { setIsMouseHover(true) }} onMouseLeave={() => { setIsMouseHover(false) }} className='text-2xl float-right p-2 py-3 w-fit font-semibold text-white '>
 
-                    {/* {(startDate && endDate.toLocaleDateString()) ? <> <span>{startDate.toLocaleDateString()} to </span> <span>{endDate.toLocaleDateString()}</span> </> : <span>Select Date</span>} */}
                     {(startDate && endDate) ? <> <span>{startDate} to </span> <span>{endDate}</span> </> : <span>Select Date</span>}
 
 
@@ -329,50 +292,7 @@ const TimeModal = () => {
                     <div onMouseEnter={() => { setIsMouseHover(true) }} onMouseLeave={() => { setIsMouseHover(false) }} className="transition-all -translate-y-2 duration-100 ease-linear modalWrapperflex m-4 flex-col justify-between w-[700px]  h-[550px] ">
 
                         <div className="modal p-2 relative px-4 h-[100%] w-[100%] bg-white rounded-t-md flex justify-between items-start">
-                            {calenderOpen &&
-                                <div className="calender absolute left-[-20.8rem] flex flex-col bg-white  z-50 mr-2">
-                                    {/* <div className="title bg-red-40 relative flex justify-between items-center z-50">
-                                        <h1 className="font-semibold text-lg p-1"> select time range</h1>
-                                        <h1 onClick={() => { setCalenderOpen(false) }} className="p-1 font-semibold text-lg text-black"> <IoClose /> </h1>
-                                    </div> */}
-                                    <div className="calenderorg mt-4 bg-blue-500">
-                                        {/* <DateRange className=""
-                                            onChange={handleDateChange}
-
-                                            editableDateInputs={true}
-                                            // onChange={item => setState([item.selection])}
-                                            moveRangeOnFirstSelection={false}
-                                            ranges={state}
-                                        /> */}
-                                        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                            <DemoContainer components={['MultiInputDateRangeField']}>
-                                                <Box sx={{
-                                                    '& .MuiMultiInputDateRangeField-root': {
-                                                        flexDirection: 'column',
-                                                        alignItems: 'flex-start',
-                                                        gap: 1,
-                                                    },
-                                                    '& .MuiTextField-root': {
-                                                        width: '50%',
-                                                    },
-                                                }}>
-                                                    <DateRangePicker
-                                                        value={[startDate, endDate]}
-                                                        calendars={1}
-                                                        onChange={(newValue) => {
-                                                            const [start, end] = newValue || [null, null];
-                                                            setStartDate(start);
-                                                            setEndDate(end);
-                                                        }}
-                                                        slots={{ field: MultiInputDateRangeField }}
-                                                    />
-                                                </Box>
-                                            </DemoContainer>
-                                        </LocalizationProvider> */}
-                                    </div>
-
-                                </div>}
-
+                           
                             <div className="left w-[60%] h-[90%] space-y`-2 overflow-y-auto">
 
                                 <h1 className='font-semibold text-md' > Absolute time range</h1>
@@ -380,9 +300,9 @@ const TimeModal = () => {
 
                                 <form onSubmit={handleFilter} className="relative z-20">
 
-                                     {/* New Componen for date range picker  */}
+                                     {/* date range picker  */}
                                     <DateTime setStartDate={setStartDate} setEndDate={setEndDate} startDate={startDate} endDate={endDate} />
-
+                                        {/* Date Range picker ends  */}
                                     <div className="btns mt-4 flex justify-baseline gap-2 items-center">
                                         <button onClick={copyNow} className="copy  p-2 rounded-sm bg-gray-200"><FaRegCopy />
                                         </button>
